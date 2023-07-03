@@ -42,14 +42,15 @@ app.get("/api/lang", (req, res, next) => {
 
 // print whoami endpoint
 app.get("/api/whoami", (req, res, next) => {
-  req.ipaddress = req.ip
+
+  // extract values to variables
   req.lang = req.headers["accept-language"]
   req.software = req.headers["user-agent"]
   next();
 }, (req, res) => {
-  console.log(req.ipaddress)
+  // json output
   res.json({
-    "ipaddress": req.ipaddress,
+    "ipaddress": req.ip,
     "language": req.lang,
     "software": req.software,
   })
