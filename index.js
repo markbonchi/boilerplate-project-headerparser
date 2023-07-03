@@ -14,6 +14,9 @@ app.use(cors({ optionsSuccessStatus: 200 })); // some legacy browsers choke on 2
 // http://expressjs.com/en/starter/static-files.html
 app.use(express.static("public"));
 
+// set loopback for ip
+app.set('trust proxy', true);
+
 // http://expressjs.com/en/starter/basic-routing.html
 app.get("/", function (req, res) {
   res.sendFile(__dirname + "/views/index.html");
@@ -39,13 +42,14 @@ app.get("/api/lang", (req, res, next) => {
 
 // print whoami endpoint
 app.get("/api/whoami", (req, res, next) => {
-  req.hostname = req.headers["host"]
+  req.ipaddress = req.ip
   req.lang = req.headers["accept-language"]
   req.software = req.headers["user-agent"]
   next();
 }, (req, res) => {
+  console.log(req.ipaddress)
   res.json({
-    "ipaddress": req.hostname,
+    "ipaddress": req.ipaddress,
     "language": req.lang,
     "software": req.software,
   })
